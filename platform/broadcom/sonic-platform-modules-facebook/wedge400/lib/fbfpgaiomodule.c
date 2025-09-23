@@ -9,12 +9,12 @@
 #define IDEBUG(...) printf(__VA_ARGS__)
 //#define IDEBUG(...)
 
-#define FPGA_RESOURCE_LENGTH 0x80000
+#define FPGA_RESOURCE_LENGTH 0x8000
 #define MAX_FPGAS 2
 
 static const char *fpga_resource_nodes[MAX_FPGAS] = {
-    "/sys/devices/pci0000:00/0000:00:05.0/resource0",
-    "/sys/devices/pci0000:00/0000:00:08.0/resource0"
+    "/sys/devices/pci0000:00/0000:00:03.0/0000:05:00.0/resource0",
+    "/sys/devices/pci0000:00/0000:00:03.3/0000:08:00.0/resource0"
 };
 
 static int hw_handle[MAX_FPGAS] = { -1, -1 };
