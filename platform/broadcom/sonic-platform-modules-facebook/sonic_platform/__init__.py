@@ -6,8 +6,11 @@ It provides the minimal objects expected by SONiC daemons so that pmon
 can import the platform package and start device specific services (e.g. ledd).
 """
 
-__all__ = []  # No public symbols from internal support namespace
+__all__ = ["platform"]
 
-# Platform integration code has moved to the top-level 'sonic_platform' package.
-# This module intentionally left lightweight so wedge400 internal helpers can
-# live here without polluting the SONiC import surface.
+# Re-export (lazy) – platform.py will be added to provide Platform class
+try:
+	from . import platform  # noqa: F401
+except Exception:
+	# Allow build to proceed even if optional modules are not yet implemented
+	pass

@@ -1,0 +1,4 @@
+# Install the pure-python sonic_platform wheel into the device directory so
+# pmon/container (which bind-mounts this path onto /usr/share/sonic/platform)
+# can discover and, if needed, pip install it.
+wedge400/sonic_platform-*.whl usr/share/sonic/device/x86_64-facebook_wedge400-r0
