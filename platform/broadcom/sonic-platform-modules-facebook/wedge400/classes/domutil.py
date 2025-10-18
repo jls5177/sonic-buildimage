@@ -238,6 +238,15 @@ class DomFpga(MmioDevice):
         led_state = state.value + (2 if blink else 0)
         self.write_reg(key=("port_led_control", port_idx), value=led_state)
 
+    def clear_all_tcvr_lp_mode(self) -> None:
+        self.write_reg("qsfp_lp_mode", 0x0)
+
+    def release_qsfp_lp_mode(self, port_idx: int):
+        orig_val = self.read_reg("qsfp_lp_mode")
+        # 0 == release, 1 == hold in lp mode
+        new_val = orig_val | ~(1 << port_idx)
+        self.write_reg("qsfp_lp_mode", new_val)
+
     def clear_all_tcvr_reset(self) -> None:
         self.write_reg("qsfp_reset", 0x0)
 
@@ -371,6 +380,15 @@ class Wedge400DomIO(object):
         port_idx = self._get_fpga_port_index(tcvr_id)
         fpga = self._get_fpga(tcvr_id)
         fpga.set_led_state(port_idx, state=state, blink=blink)
+
+    def clear_all_tcvr_lp_mode(self) -> None:
+        for fpga in self._fpgas:
+            fpga.clear_all_tcvr_lp_mode()
+
+    def release_tcvr_lp_mode(self, tcvr_id: int) -> None:
+        port_idx = self._get_fpga_port_index(tcvr_id)
+        fpga = self._get_fpga(tcvr_id)
+        fpga.release_qsfp_lp_mode(port_idx)
 
     def clear_all_tcvr_reset(self) -> None:
         for fpga in self._fpgas:
